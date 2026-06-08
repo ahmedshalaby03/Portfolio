@@ -30,16 +30,26 @@
   const TRAIL = 14;
   const trailDots = [];
   const trailPos  = Array.from({length: TRAIL}, () => ({ x: -100, y: -100 }));
-  const COLORS    = ['#00ff88','#00d4ff','#ff0066','#ffea00'];
+  const COLORS_DARK  = ['#00ff88','#00d4ff','#ff0066','#ffea00'];
+  const COLORS_LIGHT = ['#00875a','#0070a8','#cc0052','#b8860b'];
 
   for (let i = 0; i < TRAIL; i++) {
     const d = document.createElement('div');
     d.className = 'trail-dot';
     const size = Math.max(2, 6 - i * .35) + 'px';
-    d.style.cssText = `width:${size};height:${size};background:${COLORS[i % COLORS.length]};opacity:${(1 - i / TRAIL).toFixed(2)};`;
+    d.style.cssText = `width:${size};height:${size};opacity:${(1 - i / TRAIL).toFixed(2)};`;
     document.body.appendChild(d);
     trailDots.push(d);
   }
+
+  function updateTrailColors() {
+    const isLight = document.body.classList.contains('light-mode');
+    const colors = isLight ? COLORS_LIGHT : COLORS_DARK;
+    trailDots.forEach((d, i) => {
+      d.style.background = colors[i % colors.length];
+    });
+  }
+  updateTrailColors();
 
   (function animateTrail() {
     trailPos[0].x = mx; trailPos[0].y = my;
@@ -78,21 +88,30 @@
         this.vy = -(Math.random() * .6 + .2);
         this.size = Math.random() * 1.5 + .3;
         this.alpha = Math.random() * .5 + .1;
-        this.color = ['#00ff88','#00d4ff','#ff0066'][Math.floor(Math.random()*3)];
         this.life = 1;
+        this.updateColor();
+      }
+      updateColor() {
+        const isLight = document.body.classList.contains('light-mode');
+        this.color = isLight
+          ? ['#00875a','#0070a8','#cc0052'][Math.floor(Math.random()*3)]
+          : ['#00ff88','#00d4ff','#ff0066'][Math.floor(Math.random()*3)];
       }
       update() {
         this.x += this.vx + (mx - W/2) * .00012;
         this.y += this.vy;
         this.life -= .003;
-        if (this.y < -10 || this.life <= 0) this.reset();
+        if (this.y < -10 || this.life <= 0) {
+          this.reset();
+        }
       }
       draw() {
+        const isLight = document.body.classList.contains('light-mode');
         ctx.save();
-        ctx.globalAlpha = this.alpha * this.life;
+        ctx.globalAlpha = isLight ? this.alpha * this.life * 0.5 : this.alpha * this.life;
         ctx.fillStyle   = this.color;
         ctx.shadowColor = this.color;
-        ctx.shadowBlur  = 6;
+        ctx.shadowBlur  = isLight ? 3 : 6;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -104,6 +123,7 @@
 
     /* connect nearby particles */
     function drawLines() {
+      const isLight = document.body.classList.contains('light-mode');
       for (let i = 0; i < particles.length; i++) {
         for (let j = i+1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -111,8 +131,8 @@
           const dist = Math.sqrt(dx*dx + dy*dy);
           if (dist < 120) {
             ctx.save();
-            ctx.globalAlpha = (1 - dist/120) * .07;
-            ctx.strokeStyle = '#00d4ff';
+            ctx.globalAlpha = (1 - dist/120) * (isLight ? 0.04 : 0.07);
+            ctx.strokeStyle = isLight ? '#0070a8' : '#00d4ff';
             ctx.lineWidth   = .5;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -194,15 +214,17 @@
 
   /* ── 8. Random page-level glitch flash ─── */
   function randomGlitch() {
-    const body = document.body;
-    body.style.transition = 'none';
-    body.style.filter = 'hue-rotate(90deg) saturate(2) brightness(1.2)';
-    setTimeout(() => { body.style.filter = ''; }, 60);
-    setTimeout(() => {
-      body.style.transform = 'translate(-3px,1px)';
-      setTimeout(() => { body.style.transform = ''; }, 40);
-    }, 30);
-    // next glitch in 8–20 s
+    const isLight = document.body.classList.contains('light-mode');
+    if (!isLight) {
+      const body = document.body;
+      body.style.transition = 'none';
+      body.style.filter = 'hue-rotate(90deg) saturate(2) brightness(1.2)';
+      setTimeout(() => { body.style.filter = ''; }, 60);
+      setTimeout(() => {
+        body.style.transform = 'translate(-3px,1px)';
+        setTimeout(() => { body.style.transform = ''; }, 40);
+      }, 30);
+    }
     setTimeout(randomGlitch, 8000 + Math.random() * 12000);
   }
   setTimeout(randomGlitch, 5000);
@@ -228,7 +250,6 @@ const themeToggle = document.getElementById('theme-toggle');
 const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
 
 const savedTheme = localStorage.getItem('portfolio-theme');
-
 if (savedTheme === 'light') {
   document.body.classList.add('light-mode');
   if (themeIcon) {
@@ -240,7 +261,6 @@ if (savedTheme === 'light') {
 if (themeToggle) {
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
-
     const isLight = document.body.classList.contains('light-mode');
     localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
 
