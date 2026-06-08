@@ -5,9 +5,19 @@
 (function () {
   'use strict';
 
+  /* ── 0. Mobile detection ───────────────── */
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
   /* ── 1. Custom cursor ──────────────────── */
   const dot  = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
+
+  // Hide cursor elements on mobile
+  if (isMobile) {
+    if (dot)  dot.style.display  = 'none';
+    if (ring) ring.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
 
   let mx = -100, my = -100;
   let rx = -100, ry = -100;

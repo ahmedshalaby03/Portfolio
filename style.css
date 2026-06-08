@@ -752,15 +752,195 @@ body.light-mode .contact-item:hover { color:#fff; box-shadow: none; }
 .hidden { opacity:0; filter:blur(6px); transform:translateY(30px); transition:all .7s cubic-bezier(.4,0,.2,1); }
 .show   { opacity:1; filter:blur(0);  transform:translateY(0); }
 
-/* ─── Responsive ─────────────────────────── */
+/* ─── Tablet / iPad ──────────────────────── */
 @media (max-width:968px) {
-  .hero-content   { grid-template-columns:1fr; text-align:center; }
-  .skills-container { grid-template-columns:1fr; }
-  .nav-links { display:none; }
-  .theme-toggle { width:38px; height:38px; }
-  .btn-box        { justify-content:center; }
-  .glitch-name    { font-size:2.2rem; }
-  .hero-text p    { margin:0 auto 40px; }
-  .hero-img-container { justify-content:center; }
-  section { padding:120px 5%; }
+  .hero-content        { grid-template-columns:1fr; text-align:center; }
+  .skills-container    { grid-template-columns:1fr; }
+  .nav-links           { display:none; }
+  .theme-toggle        { width:38px; height:38px; }
+  .btn-box             { justify-content:center !important; flex-direction:row; flex-wrap:wrap; gap:12px; }
+  .linkss              { justify-content:center !important; }
+  .glitch-name         { font-size:2.4rem; }
+  .hero-text h3        { justify-content:center; }
+  .hero-text h2        { font-size:1.1rem; }
+  .hero-text p         { margin:0 auto 36px; max-width:520px; font-size:.9rem; }
+  .hero-img-container  { justify-content:center; margin-top:40px; }
+  .hero-img            { width:260px; height:310px; }
+  section              { padding:120px 6%; }
+  .contact-box         { padding:48px 32px; }
+}
+
+/* ─── Mobile (phones) ────────────────────── */
+@media (max-width:600px) {
+  /* Fix cursor on mobile */
+  body { cursor: auto; }
+  #cursor, #cursor-ring, .trail-dot { display: none !important; }
+  /* Nav */
+  nav {
+    padding: 14px 5%;
+  }
+  .logo {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    font-size: .85rem;
+  }
+
+  /* Sections */
+  section {
+    padding: 100px 5% 60px;
+    min-height: auto;
+  }
+
+  /* Hero */
+  #hero {
+    padding-top: 110px;
+    min-height: 100svh;
+  }
+  .glitch-name {
+    font-size: 1.7rem;
+    letter-spacing: 0px;
+    word-break: break-word;
+  }
+  .hero-text h3 {
+    font-size: .72rem;
+    letter-spacing: 2px;
+  }
+  .hero-text h2 {
+    font-size: .95rem;
+    letter-spacing: 1px;
+  }
+  .hero-text p {
+    font-size: .82rem;
+    line-height: 1.75;
+    padding-left: 12px;
+  }
+  .btn {
+    padding: 11px 18px;
+    font-size: .72rem;
+    letter-spacing: 1px;
+  }
+  .btn-box {
+    gap: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-box .btn {
+    justify-content: center;
+  }
+  .linkss {
+    font-size: 1.3rem !important;
+    gap: 18px !important;
+    margin-top: 24px !important;
+  }
+  .hero-img {
+    width: 240px;
+    height: 280px;
+  }
+  .hero-img-container {
+    margin-top: 30px;
+  }
+
+  /* Section headers */
+  .section-header {
+    margin-bottom: 36px;
+  }
+  .section-header span {
+    font-size: .62rem;
+    letter-spacing: 2.5px;
+  }
+  .section-header h2 {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+  }
+
+  /* About cards */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .info-card {
+    padding: 20px 16px;
+  }
+  .info-card h3 {
+    font-size: .85rem;
+  }
+  .info-card li {
+    font-size: .78rem;
+  }
+
+  /* Skills */
+  .skills-container {
+    gap: 16px;
+  }
+  .skill-box {
+    padding: 20px 16px;
+  }
+  .skill-category {
+    font-size: .8rem;
+  }
+  .tag {
+    font-size: .65rem;
+    padding: 6px 10px;
+  }
+
+  /* Projects */
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .project-img {
+    height: 140px;
+  }
+  .project-img i {
+    font-size: 2.2rem;
+  }
+  .project-info {
+    padding: 16px;
+  }
+  .project-info h3 {
+    font-size: .88rem;
+  }
+  .project-info p {
+    font-size: .78rem !important;
+  }
+
+  /* Contact */
+  .contact-box {
+    padding: 36px 20px;
+  }
+  .contact-box h1 {
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+  }
+  .contact-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .contact-item {
+    padding: 12px 16px;
+    font-size: .75rem;
+    justify-content: center;
+  }
+
+  /* Footer */
+  footer {
+    font-size: .7rem !important;
+    padding: 0 10px;
+    line-height: 1.7;
+  }
+}
+
+/* ─── Very small phones ──────────────────── */
+@media (max-width:380px) {
+  .glitch-name  { font-size: 1.4rem; }
+  .hero-img     { width: 200px; height: 240px; }
+  .contact-box  { padding: 28px 14px; }
+  .contact-box h1 { font-size: .95rem; }
 }
